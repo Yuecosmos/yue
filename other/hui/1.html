@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生日快乐</title>
+  <style>
+    /* 基础样式 */
+    :root {
+      --primary: #FFC857;
+      --secondary: #1F5673;
+      --accent: #E84855;
+    }
+    
+    body {
+      font-family: 'Ma Shan Zheng', 'Microsoft YaHei', cursive;
+      background: #f8f4e9 url('https://i.imgur.com/ZYwDkfP.jpg') no-repeat center/cover;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* 信纸效果 */
+    .letter {
+      width: 85%;
+      max-width: 600px;
+      background: rgba(255, 253, 245, 0.92);
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      position: relative;
+      margin: 3rem 0;
+      border: 1px solid #e0d6c2;
+      transform-style: preserve-3d;
+      animation: fadeIn 1.5s ease-out;
+    }
+    
+    .letter:before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      z-index: -1;
+      opacity: 0.6;
+    }
+    
+    /* 文字排版 */
+    .content {
+      line-height: 1.8;
+      color: #333;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .content p {
+      margin-bottom: 1.2rem;
+      text-indent: 2em;
+    }
+    
+    /* 标题样式 */
+    h1 {
+      text-align: center;
+      color: var(--secondary);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    h1:after {
+      content: "";
+      display: block;
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--primary), transparent);
+      margin: 0.5rem auto;
+    }
+    
+    /* 签名样式 */
+    .signature {
+      text-align: right;
+      font-style: italic;
+      margin-top: 2rem;
+      color: var(--secondary);
+      font-weight: bold;
+    }
+    
+    /* 插画元素 */
+    .illustration {
+      position: absolute;
+      opacity: 0.9;
+      z-index: 1;
+    }
+    
+    .rose {
+      width: 80px;
+      bottom: -30px;
+      right: -20px;
+      transform: rotate(-15deg);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .stars {
+      width: 120px;
+      top: -50px;
+      left: -30px;
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+    
+    .fox {
+      width: 100px;
+      bottom: -40px;
+      left: -30px;
+      animation: tilt 5s ease-in-out infinite;
+    }
+    
+    /* 动画效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-15deg); }
+      50% { transform: translateY(-15px) rotate(-10deg); }
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 0.6; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+    
+    @keyframes tilt {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .letter {
+        width: 90%;
+        padding: 1.5rem;
+      }
+      
+      .illustration {
+        width: 20% !important;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="letter">
+    <!-- 小王子插画元素 -->
+    <img src="https://i.imgur.com/XGJQ4tP.png" class="illustration rose" alt="玫瑰">
+    <img src="https://i.imgur.com/9n6W2bC.png" class="illustration stars" alt="星星">
+    <img src="https://i.imgur.com/5z4VdRf.png" class="illustration fox" alt="狐狸">
+    
+    <h1>生日快乐</h1>
+    
+    <div class="content">
+      <p>今天很巧，再一次刷到了小王子，温柔的狐狸说，仪式是经常被忽略的事，下午四点是一种仪式。追求结果的路上，仪式是一种过程，过程也是一种仪式。所以我敲下了这段字，相遇都是有意义的，金色的麦田是有意义的，这是一种新的生命体验，所以B-612星球上那朵骄傲的玫瑰也是全世界独一无二的玫瑰。</p>
+      
+      <p>你说过喜欢椰子树在暮色中的剪影，就像浮光里那些跳跃的音符。那就祝你生日快乐，愿新的一岁，你能继续收集世界的声音：西安城墙下的埙声，海南夜市的吉他，或者某个意外邂逅的旋律——它们都会成为你生命里独一无二的玫瑰。</p>
+      
+      <p>本来想送礼物的，但是不知道送什么，有可能的话，那就留给下一个春暖花开。</p>
+    </div>
+    
+    <div class="signature">
+      <p>—— lxy</p>
+      <p id="date"></p>
+    </div>
+  </div>
+
+  <script>
+    // 自动添加当前日期
+    document.getElementById('date').textContent = new Date().toLocaleDateString('zh-CN', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    
+    // 添加星星背景
+    function createStars() {
+      const count = 30;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.style.position = 'absolute';
+        star.style.width = `${Math.random() * 3 + 1}px`;
+        star.style.height = star.style.width;
+        star.style.backgroundColor = '#FFC857';
+        star.style.borderRadius = '50%';
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.opacity = Math.random() * 0.5 + 0.1;
+        star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite alternate`;
+        document.body.appendChild(star);
+      }
+    }
+    
+    // 页面加载完成后执行
+    window.addEventListener('load', () => {
+      createStars();
+      
+      // 添加点击特效
+      document.addEventListener('click', (e) => {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.position = 'absolute';
+        heart.style.left = `${e.clientX - 10}px`;
+        heart.style.top = `${e.clientY - 10}px`;
+        heart.style.fontSize = '20px';
+        heart.style.animation = 'float 2s ease-out forwards';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.remove();
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

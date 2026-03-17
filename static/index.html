@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅行地图 - Travel Map</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- ECharts 地图库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 登录/注册页面 -->
+        <div id="authPage" class="page active">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h1>旅行地图</h1>
+                    <p class="tagline">记录你的每一次旅行</p>
+
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" onclick="switchAuthTab('login')">登录</button>
+                        <button class="tab-btn" onclick="switchAuthTab('register')">注册</button>
+                    </div>
+
+                    <!-- 登录表单 -->
+                    <form id="loginForm" class="auth-form active">
+                        <div class="form-group">
+                            <label for="loginUsername">用户名</label>
+                            <input type="text" id="loginUsername" placeholder="输入用户名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">密码</label>
+                            <input type="password" id="loginPassword" placeholder="输入密码" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">登录</button>
+                    </form>
+
+                    <!-- 注册表单 -->
+                    <form id="registerForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="registerUsername">用户名</label>
+                            <input type="text" id="registerUsername" placeholder="输入用户名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">邮箱</label>
+                            <input type="email" id="registerEmail" placeholder="输入邮箱地址" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">密码</label>
+                            <input type="password" id="registerPassword" placeholder="输入密码（至少6位）" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword2">确认密码</label>
+                            <input type="password" id="registerPassword2" placeholder="再次输入密码" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">注册</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主地图页面 -->
+        <div id="mapPage" class="page">
+            <header class="header">
+                <div class="header-left">
+                    <h1>旅行地图</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-secondary" onclick="backToCountry()">🏠 返回上一级</button>
+                    <button class="btn btn-secondary" onclick="showExportModal()">📊 导出数据</button>
+                    <button class="btn btn-secondary" onclick="showShareModal()">🔗 分享地图</button>
+                    <div class="user-menu">
+                        <button class="btn btn-icon" onclick="toggleUserMenu()">👤</button>
+                        <div id="userMenuDropdown" class="dropdown-menu" style="display: none;">
+                            <a href="#" onclick="logout()">登出</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-container">
+                <div id="mapContainer" class="map-container"></div>
+
+                    <div class="sidebar">
+                        <div class="sidebar-header">
+                            <h2>地点列表</h2>
+                        </div>
+
+                    <div id="locationsList" class="locations-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地点详情模态框 -->
+        <div id="locationModal" class="modal" style="display: none;">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h2 id="modalTitle">地点详情</h2>
+                    <button class="close-btn" onclick="closeLocationModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="locationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="locationName">景点名称</label>
+                                <input type="text" id="locationName" placeholder="如：故宫博物院" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="visitDate">访问日期</label>
+                                <input type="date" id="visitDate">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="latitude">纬度</label>
+                                <input type="number" id="latitude" step="0.0001" placeholder="39.9042" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">经度</label>
+                                <input type="number" id="longitude" step="0.0001" placeholder="116.4074" required readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">描述</label>
+                            <textarea id="description" placeholder="记录你在这个景点的经历和感受..." rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>照片</label>
+                            <div class="image-upload">
+                                <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('imageInput').click()">
+                                    📷 上传照片
+                                </button>
+                                <div id="imagePreview" class="image-preview"></div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeLocationModal()">取消</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-danger" id="deleteBtn" style="display: none;" onclick="deleteCurrentLocation()">删除</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导出数据模态框 -->
+        <div id="exportModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>导出数据</h2>
+                    <button class="close-btn" onclick="closeExportModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>选择导出格式：</p>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="exportData('json')">📄 导出为 JSON</button>
+                        <button class="btn btn-primary" onclick="exportData('csv')">📊 导出为 CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分享地图模态框 -->
+        <div id="shareModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>分享地图</h2>
+                    <button class="close-btn" onclick="closeShareModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="shareTitle">地图标题</label>
+                        <input type="text" id="shareTitle" placeholder="如：我的2024年旅行">
+                    </div>
+                    <div class="form-group">
+                        <label for="shareDescription">描述</label>
+                        <textarea id="shareDescription" placeholder="地图描述..." rows="3"></textarea>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="sharePublic">
+                        <label for="sharePublic">公开分享</label>
+                    </div>
+                    <button class="btn btn-primary" onclick="createShare()">生成分享链接</button>
+                    <div id="shareResult" style="margin-top: 20px; display: none;">
+                        <input type="text" id="shareLink" readonly style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                        <button class="btn btn-secondary" onclick="copyShareLink()">复制链接</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加载提示 -->
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+
+        <!-- 消息提示 -->
+        <div id="notification" class="notification" style="display: none;"></div>
+    </div>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <!-- JS -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/map.js"></script>
+    <script src="/static/js/ui.js"></script>
+
+
+</body>
+</html>
